@@ -2,11 +2,14 @@
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal
 
-ARG BINARY_PATH=default-bin/app
+ENV BINARY=app
+WORKDIR /tmp
+COPY ./bin bin
 
-COPY ${BINARY_PATH} /usr/local/bin/app
+USER root
+RUN chmod +x /tmp/bin/*
+USER nobody
 
-RUN chmod +x /usr/local/bin/app
 
-ENTRYPOINT ["/usr/local/bin/app"]
+CMD /tmp/bin/$BINARY
 
